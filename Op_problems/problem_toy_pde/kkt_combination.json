@@ -1,0 +1,123 @@
+{
+  "OG": {
+    "selection": {
+      "x1": null
+    },
+    "use_ics": false,
+    "counts": {
+      "OG": 1,
+      "ICs": 0,
+      "BCs": 0,
+      "total": 1
+    },
+    "kkt_system": [
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 + lambda_1 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - lambda_1 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "d1y1dt - d2y1dx1 == 0"
+    ]
+  },
+  "ICs=False | x1=0": {
+    "selection": {
+      "x1": 0
+    },
+    "use_ics": false,
+    "counts": {
+      "OG": 1,
+      "ICs": 0,
+      "BCs": 1,
+      "total": 2
+    },
+    "kkt_system": [
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 + lambda_1 - 0.05*lambda_2 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - lambda_1 - 0.0025*lambda_2 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 - 0.05*lambda_2 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - 0.0025*lambda_2 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "d1y1dt - d2y1dx1 == 0",
+      "-0.05*d1y1dt - 0.05*d1y1dx1 - 0.0025*d2y1dt - 0.0025*d2y1dx1 + t_y1_delta/2 + x1_y1_delta/2 == 0"
+    ]
+  },
+  "ICs=False | x1=10": {
+    "selection": {
+      "x1": 10
+    },
+    "use_ics": false,
+    "counts": {
+      "OG": 1,
+      "ICs": 0,
+      "BCs": 1,
+      "total": 2
+    },
+    "kkt_system": [
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 + lambda_1 - 0.05*lambda_2 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - lambda_1 - 0.0025*lambda_2 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 - 0.05*lambda_2 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - 0.0025*lambda_2 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "d1y1dt - d2y1dx1 == 0",
+      "-0.05*d1y1dt - 0.05*d1y1dx1 - 0.0025*d2y1dt - 0.0025*d2y1dx1 + t_y1_delta/2 + x1_y1_delta/2 == 0"
+    ]
+  },
+  "ICs=True | x1=None": {
+    "selection": {
+      "x1": null
+    },
+    "use_ics": true,
+    "counts": {
+      "OG": 1,
+      "ICs": 1,
+      "BCs": 0,
+      "total": 2
+    },
+    "kkt_system": [
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 + lambda_1 - 0.05*lambda_2 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - lambda_1 - 0.0025*lambda_2 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 - 0.05*lambda_2 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - 0.0025*lambda_2 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "d1y1dt - d2y1dx1 == 0",
+      "-0.05*d1y1dt - 0.05*d1y1dx1 - 0.0025*d2y1dt - 0.0025*d2y1dx1 + t_y1_delta/2 + x1_y1_delta/2 - sin(0.5*3.14159*x1) == 0"
+    ]
+  },
+  "ICs=True | x1=0": {
+    "selection": {
+      "x1": 0
+    },
+    "use_ics": true,
+    "counts": {
+      "OG": 1,
+      "ICs": 1,
+      "BCs": 1,
+      "total": 3
+    },
+    "kkt_system": [
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 + lambda_1 - 0.05*lambda_2 - 0.05*lambda_3 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - lambda_1 - 0.0025*lambda_2 - 0.0025*lambda_3 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 - 0.05*lambda_2 - 0.05*lambda_3 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - 0.0025*lambda_2 - 0.0025*lambda_3 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "d1y1dt - d2y1dx1 == 0",
+      "-0.05*d1y1dt - 0.05*d1y1dx1 - 0.0025*d2y1dt - 0.0025*d2y1dx1 + t_y1_delta/2 + x1_y1_delta/2 - sin(0.5*3.14159*x1) == 0",
+      "-0.05*d1y1dt - 0.05*d1y1dx1 - 0.0025*d2y1dt - 0.0025*d2y1dx1 + t_y1_delta/2 + x1_y1_delta/2 == 0"
+    ]
+  },
+  "ICs=True | x1=10": {
+    "selection": {
+      "x1": 10
+    },
+    "use_ics": true,
+    "counts": {
+      "OG": 1,
+      "ICs": 1,
+      "BCs": 1,
+      "total": 3
+    },
+    "kkt_system": [
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 + lambda_1 - 0.05*lambda_2 - 0.05*lambda_3 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - lambda_1 - 0.0025*lambda_2 - 0.0025*lambda_3 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "0.0025*d1y1dt + 0.0025*d1y1dx1 + 0.000125*d2y1dt + 0.000125*d2y1dx1 - 0.05*lambda_2 - 0.05*lambda_3 - 0.025*t_y1_delta - 0.025*x1_y1_delta + 0.05*y1_data == 0",
+      "0.000125*d1y1dt + 0.000125*d1y1dx1 + 6.25e-6*d2y1dt + 6.25e-6*d2y1dx1 - 0.0025*lambda_2 - 0.0025*lambda_3 - 0.00125*t_y1_delta - 0.00125*x1_y1_delta + 0.0025*y1_data == 0",
+      "d1y1dt - d2y1dx1 == 0",
+      "-0.05*d1y1dt - 0.05*d1y1dx1 - 0.0025*d2y1dt - 0.0025*d2y1dx1 + t_y1_delta/2 + x1_y1_delta/2 - sin(0.5*3.14159*x1) == 0",
+      "-0.05*d1y1dt - 0.05*d1y1dx1 - 0.0025*d2y1dt - 0.0025*d2y1dx1 + t_y1_delta/2 + x1_y1_delta/2 == 0"
+    ]
+  }
+}

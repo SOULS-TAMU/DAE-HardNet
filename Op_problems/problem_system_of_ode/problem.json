@@ -1,0 +1,11 @@
+{
+  "parameters": ["x1"],
+  "variables": ["y1", "d2y1dx1", "y2", "d2y2dx1"],
+  "binary_variables": [],
+  "objective": "",
+  "constraints":  [   "d2y1dx1 - y1 + 2*y2 == 0",
+                      "-2*y1 + d2y2dx1 + 4*y2 == 1 - x1**2"],
+  "ICs": [],
+  "Independent_BCs": 0,
+  "file_name": "dataset.csv"
+}

@@ -1,0 +1,27 @@
+{
+  "parameters": ["t", "x1"],
+
+  "variables": ["y1", "d1y1dt", "d2y1dx1"],
+
+  "binary_variables": [],
+
+  "objective": "",
+
+  "constraints": [
+      "d1y1dt == d2y1dx1"
+  ],
+
+  "ICs": [
+      "y1 == sin(22 * x1 / (7 * 100.0))"
+  ],
+
+  "Independent_BCs": 1,
+
+  "BC1": [
+      "y1 == 0 @ x1 = 0",
+      "y1 == 0 @ x1 = 100"
+  ],
+
+
+  "file_name": "heat_equation_dataset.csv"
+}
