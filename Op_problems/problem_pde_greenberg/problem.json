@@ -1,0 +1,10 @@
+{
+  "parameters": ["x1","x2"],
+  "variables": ["y1", "d1y1dx2", "d2y1dx1"],
+  "binary_variables": [],
+  "objective": "",
+  "constraints":  ["d2y1dx1 - 5*d1y1dx2 + y1 == x1*(x2**2)*(x2-15)"],
+  "ICs": [],
+  "Independent_BCs": 0,
+  "file_name": "dataset.csv"
+}

@@ -1,0 +1,10 @@
+{
+  "parameters": ["x1"],
+  "variables": ["y1", "y2", "y3", "d1y1dx1"],
+  "binary_variables": [],
+  "objective": "",
+  "constraints":  ["-d1y1dx1 == 0.00588 * y2", "y2 == 4.6195 * y1 * y3", "y2 + y3 == 1"],
+  "ICs": [],
+  "Independent_BCs": 0,
+  "file_name": "catalysis_dae_data.csv"
+}
