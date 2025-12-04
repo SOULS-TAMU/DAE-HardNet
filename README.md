@@ -86,6 +86,28 @@ This file controls the training and solver configuration. The following keys are
 
 ---
 
+## ⁉️ How to Create Your Own Dataset
+- Define the problem (`problem.json`). This file specifies the problem as a dictionary.
+  - Input variables (features/parameters): name them sequentially as `x1, x2, x3, …`  
+  - Output variables (decision variables): name them sequentially as `y1, y2, y3, …`
+  - Notation for differential terms are mentioned before. Please follow them.
+  - Inputs go under `"parameters"`. Outputs go under `"variables"`.
+  - Constraints should be given as a list of strings. Use "==" for equality and ">="/"<=" for inequality inside the strings.
+  - Specify the data file in `"file_name"`.
+ 
+- Prepare the dataset (`.csv`)
+  - The header row must contain the parameters and variables as defined in the problem file.
+  - Ensure column names in the CSV match the names listed in "parameters" and "variables" of problem.json.
+
+- Configure the `model_config.json` file
+  - Training: `num_epochs`, `lr`, `batch_size`
+  - Splits: `train_split_size`, `val_split_size`, `test_split_size`
+  - Newton/KKT settings: `newton_tol`, `max_newton_iter`, `newton_step_length`, etc.
+  - Checkpoints: configure how often to save models (`save_checkpoint_iter`) and paths for reloading.
+
+Keep all the files in one folder inside the `OP_problems` folder. For any confusion please check the given example problems inside the `Op_problems` folder.
+
+
 ## 💾 Checkpoint Strategy
 
 - Training resumes from checkpoint if provided; otherwise, it starts from scratch.
