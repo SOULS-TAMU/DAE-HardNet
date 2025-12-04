@@ -1,0 +1,20 @@
+{
+  "OG": {
+    "selection": {},
+    "use_ics": false,
+    "counts": {
+      "OG": 2,
+      "ICs": 0,
+      "BCs": 0,
+      "total": 2
+    },
+    "kkt_system": [
+      "0.0005*d1y1dx1 + 2.5e-5*d2y1dx1 + 1.005*lambda_1 + 0.01*lambda_2 - 0.005*x1_y1_delta + 0.005*y1_data == 0",
+      "0.0005*d1y2dx1 + 2.5e-5*d2y2dx1 - 0.01*lambda_1 + 0.98*lambda_2 - 0.005*x1_y2_delta + 0.005*y2_data == 0",
+      "0.01*d1y1dx1 + 0.0005*d2y1dx1 + 0.1*lambda_1 + 0.2*lambda_2 - 0.1*x1_y1_delta + 0.1*y1_data == 0",
+      "0.01*d1y2dx1 + 0.0005*d2y2dx1 - 0.2*lambda_1 - 0.4*lambda_2 - 0.1*x1_y2_delta + 0.1*y2_data == 0",
+      "0.1*d1y1dx1 - 0.2*d1y2dx1 + 1.005*d2y1dx1 - 0.01*d2y2dx1 - x1_y1_delta + 2*x1_y2_delta == 0",
+      "0.2*d1y1dx1 - 0.4*d1y2dx1 + 0.01*d2y1dx1 + 0.98*d2y2dx1 + x1**2 - 2*x1_y1_delta + 4*x1_y2_delta - 1 == 0"
+    ]
+  }
+}

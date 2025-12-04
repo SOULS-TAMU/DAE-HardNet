@@ -892,8 +892,8 @@ class KKT_HardNet_Trainer:
             print(f", PINN = {pinn_loss:.6f}",end='')
             print(f", AV = {abs_violation:.6f}",end='')
 
-            print(f", AutoPINN = {pinn_loss_autograd:.6f}",end='')
-            print(f", AutoAV = {abs_violation_autograd:.6f}")
+            # print(f", AutoPINN = {pinn_loss_autograd:.6f}",end='')
+            # print(f", AutoAV = {abs_violation_autograd:.6f}")
 
 
             print(f"  📊 Test Loss = {avg_test_loss:.6f} | Data = {test_data_loss:.6f}", end='')
@@ -904,12 +904,12 @@ class KKT_HardNet_Trainer:
             print(f", PINN = {test_pinn_loss:.6f}", end='')
             print(f", AV = {test_abs_violation:.6f}", end='')
 
-            print(f", AutoPINN = {test_pinn_loss_autograd:.6f}", end='')
-            print(f", AutoAV = {test_abs_violation_autograd:.6f}")
+            # print(f", AutoPINN = {test_pinn_loss_autograd:.6f}", end='')
+            # print(f", AutoAV = {test_abs_violation_autograd:.6f}")
             
-            print("  📐 Losses Before Projection: ")
-            print(f" Train:     Data = {data_loss_before_projection:.6f}, PINN = {pinn_loss_before_projection:.6f}, AV = {abs_pinn_loss_before_projection:.6f}")
-            print(f" Test:      Data = {test_data_loss_before_projection:.6f}, PINN = {test_pinn_loss_before_projection:.6f}, AV = {test_abs_pinn_loss_before_projection:.6f}")
+            # print("  📐 Losses Before Projection: ")
+            # print(f" Train:     Data = {data_loss_before_projection:.6f}, PINN = {pinn_loss_before_projection:.6f}, AV = {abs_pinn_loss_before_projection:.6f}")
+            # print(f" Test:      Data = {test_data_loss_before_projection:.6f}, PINN = {test_pinn_loss_before_projection:.6f}, AV = {test_abs_pinn_loss_before_projection:.6f}")
 
     def _is_converged(self, avg_loss, avg_test_loss):
         return avg_loss < self.model_loss_tolerance and avg_test_loss < self.model_loss_tolerance
@@ -1410,11 +1410,12 @@ class KKT_HardNet_Trainer:
             self.backprop_times.append(backprop_time)
             self.optimizer_step_times.append(optimizer_step_time)
 
-            self.display_results(epoch, avg_loss, avg_test_loss,
-                                data_loss, data_loss_orig, consistency_loss,  grad_loss, pinn_loss, abs_violation, pinn_loss_autograd, abs_violation_autograd,
-                                test_data_loss, test_data_loss_orig, test_consistency_loss, test_grad_loss, test_pinn_loss, test_abs_violation, test_pinn_loss_autograd, test_abs_violation_autograd,
-                                data_loss_before_projection, pinn_loss_before_projection, abs_pinn_loss_before_projection,
-                                test_data_loss_before_projection, test_pinn_loss_before_projection, test_abs_pinn_loss_before_projection)
+            if (epoch + 1) % 50 == 0 or epoch == 0:
+                self.display_results(epoch, avg_loss, avg_test_loss,
+                                    data_loss, data_loss_orig, consistency_loss,  grad_loss, pinn_loss, abs_violation, pinn_loss_autograd, abs_violation_autograd,
+                                    test_data_loss, test_data_loss_orig, test_consistency_loss, test_grad_loss, test_pinn_loss, test_abs_violation, test_pinn_loss_autograd, test_abs_violation_autograd,
+                                    data_loss_before_projection, pinn_loss_before_projection, abs_pinn_loss_before_projection,
+                                    test_data_loss_before_projection, test_pinn_loss_before_projection, test_abs_pinn_loss_before_projection)
             
             # Save checkpoint every save_checkpoint_iter if loss improves
             if (epoch + 1) % self.save_checkpoint_iter == 0:
@@ -1432,9 +1433,9 @@ class KKT_HardNet_Trainer:
                 break
 
             # --- Save predictions every 50 epochs ---
-            if (epoch + 1) % 50 == 0:
-                if self.best_checkpoint_path is not None:
-                    checkpoint_pred = self.export_predictions_for_analysis(save_path=self.predictions_save_path.split(".csv")[0] + f"_epoch_{epoch+1}.csv")
+            # if (epoch + 1) % 50 == 0:
+            #     if self.best_checkpoint_path is not None:
+                    # checkpoint_pred = self.export_predictions_for_analysis(save_path=self.predictions_save_path.split(".csv")[0] + f"_epoch_{epoch+1}.csv")
                     # with open(self.mse_mape_save_path.split(".txt")[0] + f"_epoch_{epoch+1}.txt", "w") as f:
                     #     f.write("==================== Model Configuration ====================\n")
                     #     f.write(f"Epoch = {checkpoint_pred['epoch']}\n")

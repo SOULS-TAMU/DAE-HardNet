@@ -81,6 +81,8 @@ This file controls the training and solver configuration. The following keys are
 | `mlp_checkpoint_path` | Path to a pretrained MLP model (optional) |
 | `pinn_checkpoint_path` | Path to a pretrained PINN model (optional) |
 | `kkt_hardnet_checkpoint_path` | Path to a pretrained KKT-HardNet model (optional) |
+| `taylor_offset` | The offset used for taylor reformulation calculation in the model (Usually should be between $10^{-2}$ and $10^{-6}$) |
+| `taylor_order` | The order of taylor expansion for the reformulation. It is the maximum order of the DAE system. If kept `auto` will detect the order automatically |
 
 ---
 
