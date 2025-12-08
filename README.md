@@ -4,7 +4,7 @@
 
 This repository contains the official implementation of our paper  
 **“DAE-HardNet: A Physics Constrained Neural Network Enforcing Differential-Algebraic Hard Constraints”**.  
-The full paper is available on arXiv: https://arxiv.org/abs/2507.08124.
+The full paper is available on arXiv: [https://arxiv.org/abs/2507.08124](https://arxiv.org/abs/2512.05881).
 
 ---
 
@@ -168,13 +168,14 @@ bash runner.sh
 ⚠️ Please cite our work if you use this code in your research.
 Citation formats are provided below.
 
-**!!! Need to put the reference**
-
 ```
-@article{iftakher2025physics,
-  title  = {Physics-Informed Neural Networks with Hard Nonlinear Equality and Inequality Constraints},
-  author = {Iftakher, Ashfaq and Golder, Rahul and Hasan, MM},
-  journal= {arXiv preprint arXiv:2507.08124},
-  year   = {2025}
+@misc{golder2025daehardnetphysicsconstrainedneural,
+      title={DAE-HardNet: A Physics Constrained Neural Network Enforcing Differential-Algebraic Hard Constraints}, 
+      author={Rahul Golder and Bimol Nath Roy and M. M. Faruque Hasan},
+      year={2025},
+      eprint={2512.05881},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2512.05881}, 
 }
 ```
