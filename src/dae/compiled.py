@@ -114,8 +114,29 @@ class CompiledDAE:
                     config.implicit_gradient.differentiate_problem_parameters
                 ),
             ).prepare(batch_size=batch_size, dtype=dtype, backend=backend)
+        elif selected in {"fischer-burmeister-newton", "fischer-burmeister-reduced", "primal-dual-interior-point"}:
+            from daehn.opt.api import prepare_projection
+            from kkthn.opt.config import FischerBurmeisterConfig, ProjectionConfig as SharedConfig, ImplicitGradientConfig as SharedImplicit
+            implicit = SharedImplicit(**vars(config.implicit_gradient))
+            config_type = SharedConfig if selected == "primal-dual-interior-point" else FischerBurmeisterConfig
+            if type(config).__module__.startswith("kkthn."):
+                shared_config = config
+            else:
+                from kkthn.opt.config import LinearSolverConfig as SharedLinear
+                shared_linear = SharedLinear(**vars(config.linear_solver))
+                options = dict(tolerance=config.tolerance, max_iterations=config.max_iterations,
+                               implicit_gradient=implicit, linear_solver=shared_linear,
+                               transpose_mode=config.transpose_mode)
+                if selected == "primal-dual-interior-point":
+                    options.update(mu=config.mu, backtracking=config.backtracking,
+                                   max_backtracking_steps=config.max_backtracking_steps,
+                                   backtracking_factor=config.backtracking_factor,
+                                   interior_margin=config.interior_margin,
+                                   store_residual_history=config.store_residual_history)
+                shared_config = config_type(**options)
+            layer = prepare_projection(problem, method=selected, config=shared_config, batch_size=batch_size, dtype=dtype, backend=backend)
         else:
-            raise ValueError("projection method must be auto, linear, sparse, or fb")
+            raise ValueError("unknown projection method")
         return PreparedDAEProjection(
             self, layer, selected, config, dtype, backend, int(batch_size)
         )

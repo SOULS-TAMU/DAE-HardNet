@@ -10,10 +10,12 @@ from importlib import import_module
 from .config import ProjectionConfig, LinearSolverConfig, ImplicitGradientConfig
 from .solvers import solve
 
-_LAZY_SUBMODULES = {"layers", "solvers", "implicit", "sparse"}
+_LAZY_SUBMODULES = {"layers", "solvers", "implicit", "sparse", "api", "linear_equality", "fischer_burmeister", "primal_dual_interior_point"}
 
 
 def __getattr__(name):
+    if name in {"prepare_projection", "registered_methods"}:
+        return getattr(import_module(f"{__name__}.api"), name)
     if name in _LAZY_SUBMODULES:
         module = import_module(f"{__name__}.{name}")
         globals()[name] = module
@@ -26,6 +28,8 @@ __all__ = [
     "LinearSolverConfig",
     "ImplicitGradientConfig",
     "solve",
+    "prepare_projection",
+    "registered_methods",
     "layers",
     "solvers",
     "implicit",
