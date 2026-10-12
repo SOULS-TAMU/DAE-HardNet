@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "daehn"
+version = "0.5.3"
+description = "JAX DAE-HardNet formulation, discretization, and differentiable projection layers"
+requires-python = ">=3.10"
+dependencies = ["numpy", "jax>=0.4.20", "scipy", "flatbuffers", "absl-py"]
+
+[tool.setuptools]
+packages = ["daehn", "daehn.dae", "daehn.dae.conditions", "daehn.dae.discretization", "daehn.experimental", "daehn.export", "daehn.losses", "daehn.nn", "daehn.nn.layers", "daehn.opt", "daehn.opt.complementarity", "daehn.opt.implicit", "daehn.opt.layers", "daehn.opt.semismooth", "daehn.opt.solvers", "daehn.opt.sparse", "daehn.problems", "daehn.runtime", "daehn.serialization", "daehn.train", "daehn.tree"]
+
+[tool.setuptools.package-dir]
+daehn = "src"
