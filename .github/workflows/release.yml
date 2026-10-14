@@ -1,0 +1,59 @@
+name: GitHub source release (no PyPI)
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing version tag pointing to the dispatched commit
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - run: python -m pip install "build>=1" "twine>=5"
+      - run: python -m build
+      - run: python -m twine check --strict dist/*
+      - name: Check source and metadata version agreement
+        run: |
+          python -c 'import pathlib,re,tomllib; v=tomllib.load(open("pyproject.toml","rb"))["project"]["version"]; source=pathlib.Path("src/__init__.py").read_text(); assert re.search(r"__version__\s*=\s*[\"\x27]"+re.escape(v)+r"[\"\x27]",source), "Version mismatch"'
+  release:
+    if: github.event_name == 'workflow_dispatch'
+    needs: preflight
+    environment: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      JAX_PLATFORMS: cpu
+      JAX_ENABLE_X64: "true"
+      KKTHN_SOURCE: ${{ vars.KKTHN_SOURCE }}
+      RELEASE_TAG: ${{ inputs.tag }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - name: Verify existing release tag
+        run: |
+          python -c 'import os,tomllib; v=tomllib.load(open("pyproject.toml","rb"))["project"]["version"]; assert os.environ["RELEASE_TAG"] == "v"+v, "Tag must match project version"'
+          git check-ref-format "refs/tags/$RELEASE_TAG"
+          test "$(git rev-parse "refs/tags/$RELEASE_TAG^{commit}")" = "$(git rev-parse HEAD)"
+      - run: python tools/install_dependencies.py --extras dev
+      - run: python tools/check_package.py
+      - run: python -m build
+      - run: python -m twine check --strict dist/*
+      - name: Create GitHub release and attach source artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$RELEASE_TAG" dist/* --verify-tag --generate-notes

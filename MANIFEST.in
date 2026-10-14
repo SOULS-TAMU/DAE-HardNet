@@ -1,0 +1,9 @@
+include README.md LICENSE CITATION.cff CHANGELOG.md CONTRIBUTING.md SECURITY.md
+include pyproject.toml requirements.txt requirements-dev.txt mkdocs.yml
+include .editorconfig .pre-commit-config.yaml .gitignore .gitattributes
+recursive-include src *.py
+recursive-include tests *.py
+recursive-include docs *.md
+recursive-include tools *.py
+recursive-include .github *.yml *.md
+global-exclude __pycache__ *.py[cod]

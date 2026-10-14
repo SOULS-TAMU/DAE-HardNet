@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "Please cite this software when using the JAX DAEHN library. Add the verified DAE-HardNet manuscript citation when available."
+title: "DAEHN: JAX DAE-HardNet library"
+type: software
+version: "0.5.3"
+authors:
+  - name: "SOULS-TAMU"
+repository-code: "https://github.com/SOULS-TAMU/DAE-HardNet"
+license: MIT

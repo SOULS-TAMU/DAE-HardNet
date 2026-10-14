@@ -1,0 +1,14 @@
+site_name: DAEHN
+site_description: JAX DAE formulation, projection and model persistence
+repo_url: https://github.com/SOULS-TAMU/DAE-HardNet
+theme: readthedocs
+nav:
+  - Overview: index.md
+  - Installation: installation.md
+  - Quick start: quickstart.md
+  - DAE formulation: formulation.md
+  - Projection algorithms: projections.md
+  - Training and persistence: training.md
+  - API map: api.md
+  - Maintenance and CI: maintenance.md
+  - Quality checks: quality.md

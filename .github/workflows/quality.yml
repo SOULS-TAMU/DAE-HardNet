@@ -1,0 +1,43 @@
+name: Repository quality and coverage
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pyyaml ruff
+      - run: python tools/check_repository.py
+      - run: python -m ruff check src tests tools
+      - name: Extended checks on maintenance tools and tests
+        run: python -m ruff check tests tools --select E9,F,B
+      - name: Validate GitHub Actions syntax
+        run: |
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.7
+          "$(go env GOPATH)/bin/actionlint"
+  coverage:
+    runs-on: ubuntu-latest
+    env:
+      JAX_PLATFORMS: cpu
+      JAX_ENABLE_X64: "true"
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - run: python tools/install_dependencies.py --extras dev --native-only
+      - run: python -m pytest -m "not integration" --cov=daehn --cov-branch --cov-report=term --cov-report=xml:coverage.xml --cov-report=json:coverage.json
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: native-library-coverage
+          path: |
+            coverage.xml
+            coverage.json
