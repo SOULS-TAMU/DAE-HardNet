@@ -1,0 +1,30 @@
+name: Bug report
+description: Report installation, API or numerical problems.
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem and expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include runnable code, expected values and actual residuals. Remove private data.
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python, DAEHN commit/version, JAX/jaxlib, kkt-hardnet, device, dtype and x64 setting.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Solver diagnostics or traceback
+      render: text

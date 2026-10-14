@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "daehn"
+version = "0.5.3"
+description = "JAX DAE-HardNet formulation, discretization, and differentiable projection layers"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "SOULS-TAMU"}]
+requires-python = ">=3.10"
+dependencies = ["numpy", "jax>=0.4.20", "scipy", "flatbuffers", "absl-py", "kkt-hardnet>=0.8.0,<0.9"]
+
+[project.urls]
+Repository = "https://github.com/SOULS-TAMU/DAE-HardNet"
+Issues = "https://github.com/SOULS-TAMU/DAE-HardNet/issues"
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff>=0.9", "build>=1", "twine>=5", "pre-commit>=3", "pyyaml>=6"]
+docs = ["mkdocs>=1.5"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+markers = ["integration: shared backend integration checks"]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E9", "F63", "F7", "F82"]
+
+[tool.setuptools]
+packages = ["daehn", "daehn.dae", "daehn.dae.conditions", "daehn.dae.discretization", "daehn.experimental", "daehn.export", "daehn.losses", "daehn.nn", "daehn.nn.layers", "daehn.opt", "daehn.opt.linear_equality", "daehn.opt.fischer_burmeister", "daehn.opt.primal_dual_interior_point", "daehn.utils", "daehn.utils.sparse", "daehn.opt.complementarity", "daehn.opt.implicit", "daehn.opt.layers", "daehn.opt.semismooth", "daehn.opt.solvers", "daehn.opt.sparse", "daehn.problems", "daehn.runtime", "daehn.serialization", "daehn.train", "daehn.tree"]
+
+[tool.setuptools.package-dir]
+daehn = "src"

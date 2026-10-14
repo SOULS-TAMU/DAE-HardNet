@@ -1,0 +1,13 @@
+name: Feature request
+description: Propose an API, solver or documentation improvement.
+body:
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case and proposed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives and compatibility considerations

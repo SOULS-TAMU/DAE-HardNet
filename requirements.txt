@@ -1,6 +1,2 @@
-numpy
-pandas
-matplotlib
-sympy
-torch
-scipy
+# Runtime dependencies are maintained in pyproject.toml. Install this checkout.
+.

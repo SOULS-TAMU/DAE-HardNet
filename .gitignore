@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.jax_compilation_cache/
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+
+site/
+.wheel-test/

@@ -1,0 +1,2 @@
+# Editable checkout plus test, lint, documentation and build tools.
+-e .[dev,docs]

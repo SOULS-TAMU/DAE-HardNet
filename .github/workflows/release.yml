@@ -1,0 +1,41 @@
+name: GitHub source release (no PyPI)
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing version tag pointing to the dispatched commit
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  release:
+    environment: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      JAX_PLATFORMS: cpu
+      JAX_ENABLE_X64: "true"
+      KKTHN_SOURCE: ${{ vars.KKTHN_SOURCE }}
+      RELEASE_TAG: ${{ inputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify existing release tag
+        run: |
+          python -c 'import os,tomllib; v=tomllib.load(open("pyproject.toml","rb"))["project"]["version"]; assert os.environ["RELEASE_TAG"] == "v"+v, "Tag must match project version"'
+          git check-ref-format "refs/tags/$RELEASE_TAG"
+          test "$(git rev-parse "refs/tags/$RELEASE_TAG^{commit}")" = "$(git rev-parse HEAD)"
+      - run: python tools/install_dependencies.py --extras dev
+      - run: python tools/check_package.py
+      - run: python -m build
+      - run: python -m twine check --strict dist/*
+      - name: Create GitHub release and attach source artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$RELEASE_TAG" dist/* --verify-tag --generate-notes

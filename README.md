@@ -1,181 +1,103 @@
-# DAE-HardNet  
+# DAEHN
 
-**DAE-HardNet: A Physics Constrained Neural Network Enforcing Differential-Algebraic Hard Constraints**
+DAEHN is a Python/JAX library for DAE-HardNet formulation, discretization,
+neural-network training, and differentiable optimization/projection layers.
 
-This repository contains the official implementation of our paper  
-**“DAE-HardNet: A Physics Constrained Neural Network Enforcing Differential-Algebraic Hard Constraints”**.  
-The full paper is available on arXiv: [https://arxiv.org/abs/2507.08124](https://arxiv.org/abs/2512.05881).
+The library source lives directly in `src/`. Setuptools maps that directory
+onto the Python package `daehn`, so imports remain `import daehn`.
 
----
+## Install from GitHub
 
-## 📁 Directory Structure
-
-| Directory / File | Description |
-|------------------|-------------|
-| **KKT/** | Symbolic generation of the full KKT (Karush-Kuhn-Tucker) system for optimization problems. |
-| **Op_problems/** | Directory that contains all optimization test problems/case studies. Each problem has its own folder containing `problem.json`, `model_config.json`, and dataset. |
-| **dataset/** | Utility functions for loading, processing and batching datasets. |
-| **model/** | Implementation of the neural network models (MLP, PINN, KKT-HardNet, Newton layers, etc.). |
-| **run/** | Wrapper scripts that orchestrate the model training and evaluation for a given problem. |
-| **main.py** | Entrypoint Python script for running the code manually. |
-| **requirements.txt** | List of required Python libraries and versions. |
-| **runner.sh** | Shell script to launch experiments with a single command. |
-| **create_env.sh** | Shell script to create python environment with a single command. |
-| **installer.sh** | Shell script to install packages with a single command. |
-
----
-
-## 🧠 Problem File (``Op_problems/<your-problem>/problem.json``)
-
-Each problem is defined via a JSON file with the following fields:
-
-| Field | Description |
-|------|-------------|
-| `parameters` | List of problem parameters `x{i}` |
-| `variables` | List of model variables `y{i}` |
-| `objective` | Objective function (use empty string to use the default quadratic objective) |
-| `constraints` | List of equality and inequality constraints |
-| `file_name` | Name of the dataset file (CSV with columns for both parameters and variables) |
-
-> **Note:**  
-> We use the notation `x{index}` for parameters and `y{index}` for variables across all problems.
-
-We will consistently use the following notation across all problem definitions and documentation:
-
-* **Parameters:** Parameters are denoted by **$x_{i}$**, where $i$ is the parameter index (e.g., $x_1, x_2$).
-* **Variables:** Variables are denoted by **$y_{i}$**, where $i$ is the variable index (e.g., $y_1, y_2, y_3, y_4$).
-* **Differential Variables:** A differential variable for the $n$-th order derivative of variable $y_i$ with respect to parameter $x_j$ is denoted as **$dnyidxj$**.
-    * $n$ is the order of the derivative.
-    * $i$ is the variable index.
-    * $j$ is the parameter index.
-
-| Mathematical Notation | Text Notation | Description |
-| :--- | :--- | :--- |
-| $\frac{d y_1}{d x_1}$ | `d1y1dx1` | First derivative of $y_1$ with respect to $x_1$. |
-| $\frac{d^2 y_1}{d x_1^2}$ | `d2y1dx1` | Second derivative of $y_1$ with respect to $x_1$. |
-| $\frac{\partial^2 y_3}{\partial x_1 \partial x_2}$ | `d2y3dx1dx2` | Second-order mixed partial derivative of $y_3$. |
-
----
-
-## ⚙️ Configuration File (``Op_problems/<your-problem>/model_config.json``)
-
-This file controls the training and solver configuration. The following keys are available:
-
-| Key | Description |
-|-----|-------------|
-| `num_epochs` | Number of training epochs |
-| `lr` | Optimizer learning rate |
-| `eta` | Threshold for activating Newton layer |
-| `hidden_dim` | MLP hidden dimension |
-| `pinn_reg_factor` | Regularization coefficient for PINN terms |
-| `model_loss_tolerance` | Loss threshold for stopping training |
-| `newton_step_length` | Step size used in Newton update |
-| `newton_tol` | Tolerance for Newton convergence |
-| `newton_reg_factor` | Regularization used in Newton step (for ill-conditioned systems) |
-| `max_newton_iter` | Maximum number of Newton iterations per epoch |
-| `batch_size` | Training batch size |
-| `train_split_size` | Dataset training split ratio |
-| `val_split_size` | Dataset validation split ratio |
-| `test_split_size` | Dataset test split ratio |
-| `save_checkpoint_iter` | Checkpoint save frequency (in epochs) |
-| `mlp_checkpoint_path` | Path to a pretrained MLP model (optional) |
-| `pinn_checkpoint_path` | Path to a pretrained PINN model (optional) |
-| `kkt_hardnet_checkpoint_path` | Path to a pretrained KKT-HardNet model (optional) |
-| `taylor_offset` | The offset used for taylor reformulation calculation in the model (Usually should be between $10^{-2}$ and $10^{-6}$) |
-| `taylor_order` | The order of taylor expansion for the reformulation. It is the maximum order of the DAE system. If kept `auto` will detect the order automatically |
-
----
-
-## ⁉️ How to Create Your Own Dataset
-- Define the problem (`problem.json`). This file specifies the problem as a dictionary.
-  - Input variables (features/parameters): name them sequentially as `x1, x2, x3, …`  
-  - Output variables (decision variables): name them sequentially as `y1, y2, y3, …`
-  - Notation for differential terms are mentioned before. Please follow them.
-  - Inputs go under `"parameters"`. Outputs go under `"variables"`.
-  - Constraints should be given as a list of strings. Use "==" for equality and ">="/"<=" for inequality inside the strings.
-  - Specify the data file in `"file_name"`.
- 
-- Prepare the dataset (`.csv`)
-  - The header row must contain the parameters and variables as defined in the problem file.
-  - Ensure column names in the CSV match the names listed in "parameters" and "variables" of problem.json.
-
-- Configure the `model_config.json` file
-  - Training: `num_epochs`, `lr`, `batch_size`
-  - Splits: `train_split_size`, `val_split_size`, `test_split_size`
-  - Newton/KKT settings: `newton_tol`, `max_newton_iter`, `newton_step_length`, etc.
-  - Checkpoints: configure how often to save models (`save_checkpoint_iter`) and paths for reloading.
-
-Keep all the files in one folder inside the `OP_problems` folder. For any confusion please check the given example problems inside the `Op_problems` folder.
-
-
-## 💾 Checkpoint Strategy
-
-- Training resumes from checkpoint if provided; otherwise, it starts from scratch.
-- For DAE-HardNet, if the checkpoint loss is already below `eta`, the Newton layer will be activated from the first epoch.
-- A new checkpoint is only saved if the current epoch has a lower loss than the previous checkpoint.
-- Three types of checkpoints are created: **MLP**, **PINN**, and **DAE-HardNet** (useful for transfer learning).
-
----
-
-## 🚀 How to Run
-
-### Linux / macOS
+This library is distributed through GitHub source, with no PyPI publishing workflow.
+Use the revision containing this pyproject.toml and src/ layout; older upstream
+research revisions have different installation instructions.
 
 ```bash
-# 1. Clone the repository
-git clone <repository_name>
-
-# 2. Create and activate a virtual environment (default: "venv")
-bash create_env.sh --name "<environment_name>"
-
-# 3. Install all dependencies (default: requirements.txt)
-bash installer.sh --filename "<requirements_file>"
-
-# 4. Create a new problem directory
-mkdir ./Op_problems/<your-problem>
-
-# 5. Add 'problem.json' and 'model_config.json' into the new directory
-# 6. Add your dataset file (CSV) and reference it in 'problem.json'
-# 7. Update 'runner.sh' to include your problem directory
-
-# 8. Run the model
-bash runner.sh
+git clone https://github.com/SOULS-TAMU/DAE-HardNet.git daehn
+cd daehn
+python -m venv .venv
 ```
 
-### Windows
+Activate `.venv` with `.\.venv\Scripts\Activate.ps1` on Windows PowerShell,
+or `source .venv/bin/activate` on Linux/macOS. Then:
 
-```powershell
-# 1. Clone the repository
-git clone <repository_name>
-
-# 2. Create and activate a virtual environment (default: "venv")
-create_env.bat --name "<environment_name>"
-
-# 3. Install all dependencies (default: requirements.txt)
-installer.bat --filename "<requirements_file>"
-
-# 4. Create a new problem directory
-mkdir .\Op_problems\<your-problem>
-
-# 5. Add 'problem.json' and 'model_config.json' into the new directory
-# 6. Add your dataset file (CSV) and reference it in 'problem.json'
-# 7. Update 'runner.sh' to include your problem directory
-
-# 8. Run the model (requires Git Bash or WSL)
-bash runner.sh
+```bash
+python -m pip install --upgrade pip
+python -m pip install .
+python -m pip check
+python -c "import daehn; print(daehn.__version__)"
 ```
 
-⚠️ Please cite our work if you use this code in your research.
-Citation formats are provided below.
+KKTHN is a required dependency: distribution `kkt-hardnet>=0.8.0,<0.9`, Python
+import `kkthn`. If it is unavailable from your package index, install a compatible
+KKTHN source checkout first with `python -m pip install ../kkthn` (replace the
+path as needed). No dependency source URL is guessed here.
 
+For development: `python -m pip install -e ".[dev,docs]"`.
+The current metadata declares Python >=3.10; the initial CPU CI targets Python
+3.11/3.12/3.13 on Linux, Windows and macOS. Those hosted tests must run after pushing
+before platform compatibility is claimed. See [installation](docs/installation.md).
+
+## Quick example
+
+```python
+import jax
+jax.config.update("jax_enable_x64", True)
+import jax.numpy as jnp
+import numpy as np
+from daehn.opt.linear_equality import LinearEqualityProjection
+
+project = LinearEqualityProjection(A=np.array([[1., 1.]]), b=np.array([1.])).prepare(batch_size=1)
+print(project(jnp.array([2., 0.])))  # [1.5, -0.5]
 ```
-@misc{golder2025daehardnetphysicsconstrainedneural,
-      title={DAE-HardNet: A Physics Constrained Neural Network Enforcing Differential-Algebraic Hard Constraints}, 
-      author={Rahul Golder and Bimol Nath Roy and M. M. Faruque Hasan},
-      year={2025},
-      eprint={2512.05881},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2512.05881}, 
-}
+
+See [documentation](docs/index.md),
+[contributing](CONTRIBUTING.md), [changelog](CHANGELOG.md), [security](SECURITY.md)
+and [citation](CITATION.cff). Build docs locally with `python -m mkdocs serve`.
+
+The repository workflows test CPU behavior, source installation and documentation.
+The optional release workflow creates GitHub artifacts only. It never uploads to PyPI.
+
+## Source layout
+
+- `src/dae`: continuous systems, discretization, projected models and training.
+- `src/nn`: functional neural-network layers.
+- `src/opt`: projection layers, solvers and implicit differentiation.
+- `src/problems`: symbolic, functional and structured optimization problems.
+- `src/losses` and `src/train`: losses and training utilities.
+- `src/serialization` and `src/export`: predictor storage and deployment artifacts.
+- `src/runtime` and `src/tree`: runtime and PyTree helpers.
+
+Case-study scripts, datasets, saved models, results, analysis, and the manuscript
+audit live in the separate sibling project `../daehn-benchmarks`.
+
+```python
+import daehn
+from daehn.dae import DAESystem, TaylorNeighborhood, compile_dae
+from daehn.opt.layers.projection import SparseProjection, LinearEqualityProjection
 ```
+
+
+## Module organization and shared KKTHN backends
+
+DAE problem creation, compilation, discretization, conditions, and model reconstruction remain in `daehn.dae`; optimization problem frontends remain in `daehn.problems`. Neural networks, training, losses, runtime, and persistence retain their existing APIs.
+
+Projection implementations now live in `daehn.opt.linear_equality`, `daehn.opt.fischer_burmeister`, and `daehn.opt.primal_dual_interior_point`. Existing imports from `daehn.opt.layers` remain compatible. The historical `fb`, `sparse`, `linear`, and `auto` selections retain their original numerical implementations and defaults.
+
+The explicit methods `fischer-burmeister-newton`, `fischer-burmeister-reduced`, and `primal-dual-interior-point` use the installed KKTHN package. Select them through `compiled.prepare_projection(method=..., batch_size=...)` for a compiled DAE, or `daehn.opt.api.prepare_projection` for a DAEHN functional/canonical problem. Native KKTHN problem definitions are also accepted by the latter. DAEHN canonical functions and sparsity are adapted through KKTHN's FunctionalProblem compiler; problem construction in DAEHN is unchanged. Selecting a new algorithm can change numerical results and is opt-in.
+
+Use KKTHN's `FischerBurmeisterConfig` or `ProjectionConfig` for full control of the shared backends. When a DAEHN ProjectionConfig is provided, common tolerances, linear-solver settings, and gradient policy are transferred; shared FB-specific settings use KKTHN defaults. Shared sparse assembly, operators, MINRES, conversion, and types are imported through `daehn.utils.sparse`. Historical DAEHN sparse solver kernels remain available for existing results.
+
+The `kkt-hardnet` distribution (KKTHN 0.8.x) is required for the shared interfaces. It must be installed before installing DAEHN if it is not available from your package index.
+
+The Git tag `pre-kkthn-modularization` preserves the full library before this reorganization. To inspect it use `git show pre-kkthn-modularization:src/opt/layers/projection.py`; use a separate checkout of that tag when comparing old runs.
+
+### Reorganization verification (2026-10-11)
+
+Compared the saved DAEHN reference runs for Lotka-Volterra and CSTR against the pre-reorganization code. Predictions, full-model derivatives, differential/algebraic residuals, and solver residuals matched exactly (maximum absolute difference 0). Three projected optimizer updates from the same saved weights and batches also matched exactly, including all parameter leaves and training metrics. This is a short regression check, not a complete retraining. No benchmark result files were overwritten.
+
+The three imported backends passed an analytical two-variable equality projection and finite-gradient check; full/reduced FB maximum errors were approximately 3.75e-10, and interior-point error was 0. Shared sparse matrix-vector multiplication and compatibility imports passed. The eight relocated solver definitions have identical parsed Python code to the Git snapshot.
+
+All three shared backends also passed an equality-plus-nonnegativity check with converged statuses and finite gradients. Full/reduced FB agreed with the boundary optimum within 5.5e-11; the interior-point solver retained the expected finite-barrier offset of approximately 5e-5 at its default mu=1e-4. A compiled CSTR preparation/call with each new backend also returned converged status. These integration checks do not establish full benchmark equivalence when switching algorithms.
+
+The CPU matrix runs native-library tests independently of KKTHN. A separate shared-backend job and the full installation job require the compatible kkt-hardnet 0.8 distribution or a configured KKTHN_SOURCE. Native-only installation uses --no-deps after installing other declared dependencies and is a CI isolation technique, not the recommended user installation. Until the compatible shared package is available, those dependency jobs remain blocked.
