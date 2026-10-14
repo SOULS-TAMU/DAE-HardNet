@@ -12,3 +12,6 @@ dist/
 .venv/
 venv/
 env/
+
+site/
+.wheel-test/
