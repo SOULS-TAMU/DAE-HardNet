@@ -1,4 +1,16 @@
-# DAEHN
+# DAEHN — Differentiable DAE projection in JAX
+
+[![Native CPU tests](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/ci.yml/badge.svg?branch=jax-library-ci)](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/ci.yml?query=branch%3Ajax-library-ci)
+[![Quality & coverage](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/quality.yml/badge.svg?branch=jax-library-ci)](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/quality.yml?query=branch%3Ajax-library-ci)
+[![CodeQL](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/codeql.yml/badge.svg?branch=jax-library-ci)](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/codeql.yml?query=branch%3Ajax-library-ci)
+[![Native dependency audit](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/dependency-audit.yml/badge.svg?branch=jax-library-ci)](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/dependency-audit.yml?query=branch%3Ajax-library-ci)
+[![Documentation](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/docs.yml/badge.svg?branch=jax-library-ci)](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/docs.yml?query=branch%3Ajax-library-ci)
+[![Release preflight](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/release.yml/badge.svg?branch=jax-library-ci)](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/release.yml?query=branch%3Ajax-library-ci)
+[![KKTHN integration](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/integration.yml/badge.svg?branch=jax-library-ci)](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/integration.yml?query=branch%3Ajax-library-ci)
+[![Full installation](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/package.yml/badge.svg?branch=jax-library-ci)](https://github.com/SOULS-TAMU/DAE-HardNet/actions/workflows/package.yml?query=branch%3Ajax-library-ci)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**Status scope:** badges track the `jax-library-ci` review branch. Native checks are separate from KKTHN integration and full installation, which remain blocked by the unavailable compatible dependency. See [quality-check scope](docs/quality.md).
 
 DAEHN is a Python/JAX library for DAE-HardNet formulation, discretization,
 neural-network training, and differentiable optimization/projection layers.
@@ -13,7 +25,7 @@ Use the revision containing this pyproject.toml and src/ layout; older upstream
 research revisions have different installation instructions.
 
 ```bash
-git clone https://github.com/SOULS-TAMU/DAE-HardNet.git daehn
+git clone --branch jax-library-ci https://github.com/SOULS-TAMU/DAE-HardNet.git daehn
 cd daehn
 python -m venv .venv
 ```
@@ -35,8 +47,8 @@ path as needed). No dependency source URL is guessed here.
 
 For development: `python -m pip install -e ".[dev,docs]"`.
 The current metadata declares Python >=3.10; the initial CPU CI targets Python
-3.11/3.12/3.13 on Linux, Windows and macOS. Those hosted tests must run after pushing
-before platform compatibility is claimed. See [installation](docs/installation.md).
+3.11/3.12/3.13 on Linux, Windows and macOS. The preceding native-test campaign passed
+all nine combinations; badges report the current revision. See [installation](docs/installation.md).
 
 ## Quick example
 

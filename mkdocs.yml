@@ -11,3 +11,4 @@ nav:
   - Training and persistence: training.md
   - API map: api.md
   - Maintenance and CI: maintenance.md
+  - Quality checks: quality.md

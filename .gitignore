@@ -15,3 +15,6 @@ env/
 
 site/
 .wheel-test/
+coverage.xml
+coverage.json
+dependency-audit.json

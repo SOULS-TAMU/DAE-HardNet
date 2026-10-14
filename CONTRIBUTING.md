@@ -5,6 +5,7 @@ Install a supported Python interpreter and create a virtual environment as descr
 Before submitting a change:
 
 ```bash
+python tools/check_repository.py
 python -m pytest
 python -m ruff check src tests tools
 python -m mkdocs build --strict
