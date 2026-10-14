@@ -14,7 +14,7 @@ def main():
     args = parser.parse_args()
     if args.native_only:
         root = Path(__file__).resolve().parents[1]
-        metadata = tomllib.loads((root/"pyproject.toml").read_text())
+        metadata = tomllib.loads((root/"pyproject.toml").read_text(encoding="utf-8"))
         dependencies = [d for d in metadata["project"]["dependencies"] if not d.startswith("kkt-hardnet")]
         for extra in filter(None, args.extras.split(",")):
             dependencies.extend(metadata["project"]["optional-dependencies"][extra])

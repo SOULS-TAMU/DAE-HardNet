@@ -16,7 +16,7 @@ def run(command, cwd):
 
 
 def main():
-    packages = tomllib.loads((ROOT/"pyproject.toml").read_text())["tool"]["setuptools"]["packages"]
+    packages = tomllib.loads((ROOT/"pyproject.toml").read_text(encoding="utf-8"))["tool"]["setuptools"]["packages"]
     discovered = {"daehn" + ("."+str(p.parent.relative_to(ROOT/"src")).replace("\\", ".").replace("/", ".") if p.parent != ROOT/"src" else "") for p in (ROOT/"src").rglob("__init__.py")}
     if set(packages) != discovered:
         raise RuntimeError("Setuptools package inventory mismatch: " + repr(set(packages)^discovered))
