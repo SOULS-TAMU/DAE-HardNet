@@ -11,6 +11,6 @@ README workflow badges report the jax-library-ci review branch. Switch their bra
 - Release preflight: source build, metadata checks and version agreement; it creates no release on a pull request.
 - Shared integration and full installation: still blocked until kkt-hardnet 0.8 is supplied through a supported index or KKTHN_SOURCE, as previously agreed.
 
-Tests include analytical gradients, parameter sensitivities, randomized feasibility/idempotence/normal corrections, dense/sparse definition agreement, float32 tolerances, invalid preparations, DAE residual reconstruction, serialization round trips and malformed-artifact rejection. The mathematical library source is unchanged by these quality additions.
+Tests include analytical gradients, parameter sensitivities, randomized feasibility/idempotence/normal corrections, dense/sparse definition agreement, float32 tolerances, invalid preparations, DAE residual reconstruction, serialization round trips and malformed-artifact rejection. Projection formulas, solver defaults, training routines and checkpoints are unchanged; the CodeQL cleanup removes an unused import.
 
 Run `python tools/check_repository.py`, `python -m pytest`, and `python -m ruff check src tests tools` locally. Native-only CI is an isolation technique, not a supported substitute for installing all required dependencies. CodeQL and dependency audit findings should be reviewed before describing the repository as secure.

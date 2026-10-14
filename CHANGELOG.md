@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add live README badges, CodeQL security/quality analysis, native dependency audit, coverage artifacts, repository consistency and workflow syntax checks.
+- Add projection properties and malformed-checkpoint regression tests; remove a CodeQL-reported unused import.
+
 - Add GitHub/source installation guidance, documentation and contribution files.
 - Add CPU CI, numerical regression tests, isolated wheel/source installation checks and optional GitHub release artifacts.
 - Correct the shared dependency distribution name to `kkt-hardnet`; Python imports remain `kkthn`.
